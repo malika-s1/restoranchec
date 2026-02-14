@@ -462,7 +462,7 @@
             </nav>
             
             <div class="sidebar-footer">
-                <button id="logoutBtn" class="btn btn-primary" style="width: 100%;">🚪 Выйти</button>
+                <button id="logoutBtn" class="btn btn-primary" style="width: 100%;">Выйти</button>
             </div>
         </aside>
         
@@ -803,7 +803,7 @@
             
             // Обновляем информацию о пользователе
             document.getElementById('currentUser').textContent = user.username;
-            document.getElementById('currentRole').textContent = user.role === 'admin' ? '👑 Администратор' : '👔 Менеджер';
+            document.getElementById('currentRole').textContent = user.role === 'admin' ? 'Администратор' : 'Менеджер';
             
             // Загружаем начальные данные
             showPage('dashboard');
