@@ -1,0 +1,1291 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restoran</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Страница входа */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .login-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .login-demo {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        /* Главная панель */
+        .main-page {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-header h2 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .user-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .sidebar-nav ul {
+            list-style: none;
+            flex: 1;
+        }
+        
+        .sidebar-nav li {
+            margin: 10px 0;
+        }
+        
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            padding: 12px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: #34495e;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background: #f5f5f5;
+            overflow-y: auto;
+        }
+        
+        .content-header {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .content-header h1 {
+            color: #2c3e50;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-new {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-cooking {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .status-delivered {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 5px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-page {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .sidebar-nav ul {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+            }
+            
+            .sidebar-nav li {
+                margin: 0;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Страница входа -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Restoran</h1>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" id="username" placeholder="Введите логин" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" placeholder="Введите пароль" required>
+                </div>
+                
+                <button type="button" id="loginBtn" class="btn btn-primary">Войти в систему</button>
+                
+                <div id="loginError" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Главная панель -->
+    <div id="mainPage" class="main-page hidden">
+        <!-- Сайдбар -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Restoran</h2>
+                <div class="user-info">
+                    <p id="currentUser"></p>
+                    <p id="currentRole"></p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-page="dashboard">Дашборд</a></li>
+                    <li><a href="#" class="nav-link" data-page="categories">Категории</a></li>
+                    <li><a href="#" class="nav-link" data-page="dishes">Блюда</a></li>
+                    <li><a href="#" class="nav-link" data-page="orders">Заказы</a></li>
+                    <li><a href="#" class="nav-link" data-page="newOrder">Новый заказ</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn btn-primary" style="width: 100%;">🚪 Выйти</button>
+            </div>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1 id="pageTitle">Дашборд</h1>
+                <div id="currentDateTime"></div>
+            </header>
+            
+            <div class="content-wrapper">
+                <!-- Дашборд -->
+                <div id="dashboardPage" class="page-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Всего заказов</h3>
+                            <div class="stat-number" id="totalOrders">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Новые заказы</h3>
+                            <div class="stat-number" id="newOrders">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>В готовке</h3>
+                            <div class="stat-number" id="cookingOrders">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Доставлено</h3>
+                            <div class="stat-number" id="deliveredOrders">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <h3 style="padding: 20px 20px 0; margin: 0;">Последние заказы</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Клиент</th>
+                                    <th>Телефон</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Дата</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrders">
+                                <!-- Данные будут вставлены через JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Категории -->
+                <div id="categoriesPage" class="page-content hidden">
+                    <div class="content-header" style="margin-bottom: 20px;">
+                        <h2>Управление категориями</h2>
+                        <button id="addCategoryBtn" class="btn btn-primary">Добавить категорию</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Описание</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTable">
+                                <!-- Данные будут вставлены через JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Блюда -->
+                <div id="dishesPage" class="page-content hidden">
+                    <div class="content-header" style="margin-bottom: 20px;">
+                        <h2>Управление блюдами</h2>
+                        <button id="addDishBtn" class="btn btn-primary">Добавить блюдо</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Состав</th>
+                                    <th>Цена</th>
+                                    <th>Вес</th>
+                                    <th>Категория</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dishesTable">
+                                <!-- Данные будут вставлены через JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Заказы -->
+                <div id="ordersPage" class="page-content hidden">
+                    <div class="content-header" style="margin-bottom: 20px;">
+                        <h2>Управление заказами</h2>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Клиент</th>
+                                    <th>Телефон</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Дата</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable">
+                                <!-- Данные будут вставлены через JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Новый заказ -->
+                <div id="newOrderPage" class="page-content hidden">
+                    <div class="content-header" style="margin-bottom: 20px;">
+                        <h2>Создание заказа</h2>
+                    </div>
+                    
+                    <div class="form-container">
+                        <form id="createOrderForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="orderCustomerName">Имя клиента *</label>
+                                    <input type="text" id="orderCustomerName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="orderCustomerPhone">Телефон *</label>
+                                    <input type="tel" id="orderCustomerPhone" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderTotalPrice">Сумма заказа (₽) *</label>
+                                <input type="number" id="orderTotalPrice" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="orderStatus">Статус заказа</label>
+                                <select id="orderStatus">
+                                    <option value="new">Новый</option>
+                                    <option value="cooking">Готовится</option>
+                                    <option value="delivered">Доставлен</option>
+                                </select>
+                            </div>
+                            
+                            <div class="modal-footer" style="padding: 0; border: none;">
+                                <button type="button" id="createOrderBtn" class="btn btn-primary">Создать заказ</button>
+                                <button type="reset" class="btn">Очистить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Модальное окно категории -->
+    <div id="categoryModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="categoryModalTitle">Добавить категорию</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label for="categoryName">Название категории *</label>
+                    <input type="text" id="categoryName" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryDescription">Описание</label>
+                    <textarea id="categoryDescription" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="saveCategoryBtn" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn modal-close">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Модальное окно блюда -->
+    <div id="dishModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="dishModalTitle">Добавить блюдо</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="dishForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dishName">Название блюда *</label>
+                        <input type="text" id="dishName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dishCategory">Категория *</label>
+                        <select id="dishCategory" required>
+                            <!-- Заполнится через JS -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dishPrice">Цена (₽) *</label>
+                        <input type="number" id="dishPrice" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dishWeight">Вес (г) *</label>
+                        <input type="number" id="dishWeight" min="0" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dishComposition">Состав *</label>
+                    <textarea id="dishComposition" rows="3" required></textarea>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" id="saveDishBtn" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn modal-close">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
+        let currentUser = null;
+        let isAdmin = false;
+        
+        // Данные в памяти (локальное хранилище)
+        let users = [
+            { id: 1, username: 'admin', password: 'admin123', role: 'admin' },
+            { id: 2, username: 'manager', password: 'manager123', role: 'manager' }
+        ];
+        
+        let categories = [
+            { id: 1, name: 'Супы', description: 'Горячие первые блюда' },
+            { id: 2, name: 'Главные блюда', description: 'Основные горячие блюда' },
+            { id: 3, name: 'Салаты', description: 'Холодные и теплые салаты' },
+            { id: 4, name: 'Десерты', description: 'Сладкие блюда и выпечка' },
+            { id: 5, name: 'Напитки', description: 'Холодные и горячие напитки' }
+        ];
+        
+        let dishes = [
+            { id: 1, name: 'Борщ', composition: 'Свекла, капуста, картофель, говядина, сметана', price: 350, weight: 350, category_id: 1 },
+            { id: 2, name: 'Стейк Рибай', composition: 'Говяжья вырезка, специи, овощи гриль', price: 1200, weight: 300, category_id: 2 },
+            { id: 3, name: 'Цезарь', composition: 'Курица, салат айсберг, сухарики, соус цезарь', price: 450, weight: 250, category_id: 3 },
+            { id: 4, name: 'Тирамису', composition: 'Маскарпоне, кофе, печенье савоярди, какао', price: 380, weight: 150, category_id: 4 },
+            { id: 5, name: 'Апельсиновый сок', composition: 'Свежевыжатый апельсиновый сок', price: 200, weight: 250, category_id: 5 }
+        ];
+        
+        let orders = [
+            { id: 1, customer_name: 'Иван Иванов', customer_phone: '+79161234567', total_price: 800, status: 'new', created_at: new Date().toISOString() },
+            { id: 2, customer_name: 'Мария Петрова', customer_phone: '+79269876543', total_price: 1550, status: 'cooking', created_at: new Date().toISOString() },
+            { id: 3, customer_name: 'Алексей Сидоров', customer_phone: '+79031112233', total_price: 450, status: 'delivered', created_at: new Date().toISOString() }
+        ];
+        
+        // ==================== УТИЛИТЫ ====================
+        function showError(message, elementId = 'loginError') {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function formatPrice(price) {
+            return price.toFixed(2) + ' ₽';
+        }
+        
+        function getStatusText(status) {
+            const statuses = {
+                'new': 'Новый',
+                'cooking': 'Готовится', 
+                'delivered': 'Доставлен',
+                'cancelled': 'Отменен'
+            };
+            return statuses[status] || status;
+        }
+        
+        function getCategoryName(categoryId) {
+            const category = categories.find(c => c.id === categoryId);
+            return category ? category.name : 'Неизвестно';
+        }
+        
+        // ==================== АВТОРИЗАЦИЯ ====================
+        function handleLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Проверяем введены ли данные
+            if (!username || !password) {
+                showError('Введите имя пользователя и пароль');
+                return;
+            }
+            
+            // Простая проверка
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (!user) {
+                showError('Неверное имя пользователя или пароль');
+                return;
+            }
+            
+            // Сохраняем текущего пользователя
+            currentUser = user;
+            isAdmin = user.role === 'admin';
+            
+            // Показываем главную панель
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainPage').classList.remove('hidden');
+            
+            // Обновляем информацию о пользователе
+            document.getElementById('currentUser').textContent = user.username;
+            document.getElementById('currentRole').textContent = user.role === 'admin' ? '👑 Администратор' : '👔 Менеджер';
+            
+            // Загружаем начальные данные
+            showPage('dashboard');
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Очищаем форму (необязательно)
+            // document.getElementById('loginForm').reset();
+        }
+        
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            
+            // Очищаем форму входа
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // ==================== НАВИГАЦИЯ ====================
+        function showPage(pageName) {
+            // Обновляем активные ссылки
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === pageName) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Скрываем все страницы
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Показываем выбранную страницу
+            const pageElement = document.getElementById(pageName + 'Page');
+            if (pageElement) {
+                pageElement.classList.remove('hidden');
+                
+                // Обнов заголовок
+                const titles = {
+                    'dashboard': 'Дашборд',
+                    'categories': 'Категории',
+                    'dishes': 'Блюда',
+                    'orders': 'Заказы',
+                    'newOrder': 'Новый заказ'
+                };
+                document.getElementById('pageTitle').textContent = titles[pageName];
+                
+                // Загруж данные для страницы
+                switch(pageName) {
+                    case 'dashboard':
+                        loadDashboard();
+                        break;
+                    case 'categories':
+                        loadCategories();
+                        break;
+                    case 'dishes':
+                        loadDishes();
+                        break;
+                    case 'orders':
+                        loadOrders();
+                        break;
+                }
+            }
+        }
+        
+        // ==================== ДАШБОРД ====================
+        function loadDashboard() {
+            // Статистика
+            const totalOrders = orders.length;
+            const newOrders = orders.filter(o => o.status === 'new').length;
+            const cookingOrders = orders.filter(o => o.status === 'cooking').length;
+            const deliveredOrders = orders.filter(o => o.status === 'delivered').length;
+            
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('newOrders').textContent = newOrders;
+            document.getElementById('cookingOrders').textContent = cookingOrders;
+            document.getElementById('deliveredOrders').textContent = deliveredOrders;
+            
+            // Последние заказы
+            const recentOrders = [...orders].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
+            const tbody = document.getElementById('recentOrders');
+            tbody.innerHTML = recentOrders.map(order => `
+                <tr>
+                    <td>#${order.id}</td>
+                    <td>${order.customer_name}</td>
+                    <td>${order.customer_phone}</td>
+                    <td>${formatPrice(order.total_price)}</td>
+                    <td><span class="status-badge status-${order.status}">${getStatusText(order.status)}</span></td>
+                    <td>${formatDate(order.created_at)}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // ==================== КАТЕГОРИИ ====================
+        function loadCategories() {
+            const tbody = document.getElementById('categoriesTable');
+            tbody.innerHTML = categories.map(category => `
+                <tr>
+                    <td>${category.id}</td>
+                    <td>${category.name}</td>
+                    <td>${category.description || '-'}</td>
+                    <td class="action-buttons">
+                        ${isAdmin ? `
+                            <button class="btn btn-sm btn-warning" onclick="editCategory(${category.id})">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteCategory(${category.id})">🗑️</button>
+                        ` : 'Только для администратора'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function showCategoryModal(category = null) {
+            const modal = document.getElementById('categoryModal');
+            const title = document.getElementById('categoryModalTitle');
+            
+            if (category) {
+                title.textContent = 'Редактировать категорию';
+                document.getElementById('categoryName').value = category.name;
+                document.getElementById('categoryDescription').value = category.description || '';
+                document.getElementById('saveCategoryBtn').dataset.id = category.id;
+            } else {
+                title.textContent = 'Добавить категорию';
+                document.getElementById('categoryName').value = '';
+                document.getElementById('categoryDescription').value = '';
+                delete document.getElementById('saveCategoryBtn').dataset.id;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function saveCategory() {
+            const name = document.getElementById('categoryName').value.trim();
+            const description = document.getElementById('categoryDescription').value.trim();
+            const categoryId = document.getElementById('saveCategoryBtn').dataset.id;
+            
+            if (!name) {
+                alert('Введите название категории');
+                return;
+            }
+            
+            if (categoryId) {
+                // Редактирование
+                const index = categories.findIndex(c => c.id === parseInt(categoryId));
+                if (index !== -1) {
+                    categories[index] = { ...categories[index], name, description };
+                }
+            } else {
+                // Добавление
+                const newId = categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1;
+                categories.push({
+                    id: newId,
+                    name,
+                    description,
+                    created_at: new Date().toISOString()
+                });
+            }
+            
+            closeModal('categoryModal');
+            loadCategories();
+            updateDishCategorySelect();
+        }
+        
+        function editCategory(id) {
+            if (!isAdmin) {
+                alert('Только администратор может редактировать категории');
+                return;
+            }
+            
+            const category = categories.find(c => c.id === id);
+            if (category) {
+                showCategoryModal(category);
+            }
+        }
+        
+        function deleteCategory(id) {
+            if (!isAdmin) {
+                alert('Только администратор может удалять категории');
+                return;
+            }
+            
+            // Проверяем, есть ли блюда в категории
+            const hasDishes = dishes.some(d => d.category_id === id);
+            
+            if (hasDishes) {
+                alert('Нельзя удалить категорию, в которой есть блюда');
+                return;
+            }
+            
+            if (confirm('Удалить эту категорию?')) {
+                categories = categories.filter(c => c.id !== id);
+                loadCategories();
+                updateDishCategorySelect();
+            }
+        }
+        
+        // ==================== БЛЮДА ====================
+        function loadDishes() {
+            const tbody = document.getElementById('dishesTable');
+            tbody.innerHTML = dishes.map(dish => `
+                <tr>
+                    <td>${dish.id}</td>
+                    <td>${dish.name}</td>
+                    <td>${dish.composition}</td>
+                    <td>${formatPrice(dish.price)}</td>
+                    <td>${dish.weight} г</td>
+                    <td>${getCategoryName(dish.category_id)}</td>
+                    <td class="action-buttons">
+                        ${isAdmin ? `
+                            <button class="btn btn-sm btn-warning" onclick="editDish(${dish.id})">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteDish(${dish.id})">🗑️</button>
+                        ` : 'Только для администратора'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function updateDishCategorySelect() {
+            const select = document.getElementById('dishCategory');
+            if (select) {
+                select.innerHTML = '<option value="">Выберите категорию</option>' +
+                    categories.map(category => `
+                        <option value="${category.id}">${category.name}</option>
+                    `).join('');
+            }
+        }
+        
+        function showDishModal(dish = null) {
+            updateDishCategorySelect();
+            
+            const modal = document.getElementById('dishModal');
+            const title = document.getElementById('dishModalTitle');
+            
+            if (dish) {
+                title.textContent = 'Редактировать блюдо';
+                document.getElementById('dishName').value = dish.name;
+                document.getElementById('dishComposition').value = dish.composition;
+                document.getElementById('dishPrice').value = dish.price;
+                document.getElementById('dishWeight').value = dish.weight;
+                document.getElementById('dishCategory').value = dish.category_id;
+                document.getElementById('saveDishBtn').dataset.id = dish.id;
+            } else {
+                title.textContent = 'Добавить блюдо';
+                document.getElementById('dishName').value = '';
+                document.getElementById('dishComposition').value = '';
+                document.getElementById('dishPrice').value = '';
+                document.getElementById('dishWeight').value = '';
+                document.getElementById('dishCategory').value = '';
+                delete document.getElementById('saveDishBtn').dataset.id;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function saveDish() {
+            const name = document.getElementById('dishName').value.trim();
+            const composition = document.getElementById('dishComposition').value.trim();
+            const price = parseFloat(document.getElementById('dishPrice').value);
+            const weight = parseInt(document.getElementById('dishWeight').value);
+            const category_id = parseInt(document.getElementById('dishCategory').value);
+            const dishId = document.getElementById('saveDishBtn').dataset.id;
+            
+            if (!name || !composition || isNaN(price) || isNaN(weight) || isNaN(category_id)) {
+                alert('Заполните все поля корректно');
+                return;
+            }
+            
+            if (price <= 0 || weight <= 0) {
+                alert('Цена и вес должны быть больше 0');
+                return;
+            }
+            
+            if (dishId) {
+                // Редактирование
+                const index = dishes.findIndex(d => d.id === parseInt(dishId));
+                if (index !== -1) {
+                    dishes[index] = { ...dishes[index], name, composition, price, weight, category_id };
+                }
+            } else {
+                // Добавление
+                const newId = dishes.length > 0 ? Math.max(...dishes.map(d => d.id)) + 1 : 1;
+                dishes.push({
+                    id: newId,
+                    name,
+                    composition,
+                    price,
+                    weight,
+                    category_id,
+                    created_at: new Date().toISOString()
+                });
+            }
+            
+            closeModal('dishModal');
+            loadDishes();
+        }
+        
+        function editDish(id) {
+            if (!isAdmin) {
+                alert('Только администратор может редактировать блюда');
+                return;
+            }
+            
+            const dish = dishes.find(d => d.id === id);
+            if (dish) {
+                showDishModal(dish);
+            }
+        }
+        
+        function deleteDish(id) {
+            if (!isAdmin) {
+                alert('Только администратор может удалять блюда');
+                return;
+            }
+            
+            if (confirm('Удалить это блюдо?')) {
+                dishes = dishes.filter(d => d.id !== id);
+                loadDishes();
+            }
+        }
+        
+        // ==================== ЗАКАЗЫ ====================
+        function loadOrders() {
+            const tbody = document.getElementById('ordersTable');
+            tbody.innerHTML = orders.map(order => `
+                <tr>
+                    <td>#${order.id}</td>
+                    <td>${order.customer_name}</td>
+                    <td>${order.customer_phone}</td>
+                    <td>${formatPrice(order.total_price)}</td>
+                    <td><span class="status-badge status-${order.status}">${getStatusText(order.status)}</span></td>
+                    <td>${formatDate(order.created_at)}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-info" onclick="changeOrderStatus(${order.id})">📝 Статус</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteOrder(${order.id})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function createOrder() {
+            const customer_name = document.getElementById('orderCustomerName').value.trim();
+            const customer_phone = document.getElementById('orderCustomerPhone').value.trim();
+            const total_price = parseFloat(document.getElementById('orderTotalPrice').value);
+            const status = document.getElementById('orderStatus').value;
+            
+            if (!customer_name || !customer_phone || isNaN(total_price)) {
+                alert('Заполните все обязательные поля');
+                return;
+            }
+            
+            if (total_price <= 0) {
+                alert('Сумма должна быть больше 0');
+                return;
+            }
+            
+            const newId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
+            orders.push({
+                id: newId,
+                customer_name,
+                customer_phone,
+                total_price,
+                status,
+                created_at: new Date().toISOString()
+            });
+            
+            alert('Заказ создан успешно!');
+            document.getElementById('createOrderForm').reset();
+            showPage('orders');
+        }
+        
+        function changeOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const newStatus = prompt('Введите новый статус (new, cooking, delivered, cancelled):', order.status);
+            
+            if (newStatus && ['new', 'cooking', 'delivered', 'cancelled'].includes(newStatus)) {
+                order.status = newStatus;
+                loadOrders();
+                loadDashboard();
+            }
+        }
+        
+        function deleteOrder(orderId) {
+            if (confirm('Удалить этот заказ?')) {
+                orders = orders.filter(o => o.id !== orderId);
+                loadOrders();
+                loadDashboard();
+            }
+        }
+        
+        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+        function updateDateTime() {
+            const now = new Date();
+            const dateTimeElement = document.getElementById('currentDateTime');
+            if (dateTimeElement) {
+                dateTimeElement.textContent = now.toLocaleString('ru-RU', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+        
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Кнопка входа
+            document.getElementById('loginBtn').addEventListener('click', handleLogin);
+            
+            // Также можно войти по нажатию Enter
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+            
+            // Кнопка выхода
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // Навигация
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showPage(this.dataset.page);
+                });
+            });
+            
+            // Кнопки добавления
+            document.getElementById('addCategoryBtn').addEventListener('click', function() {
+                if (!isAdmin) {
+                    alert('Только администратор может добавлять категории');
+                    return;
+                }
+                showCategoryModal();
+            });
+            
+            document.getElementById('addDishBtn').addEventListener('click', function() {
+                if (!isAdmin) {
+                    alert('Только администратор может добавлять блюда');
+                    return;
+                }
+                showDishModal();
+            });
+            
+            // Кнопка создания заказа
+            document.getElementById('createOrderBtn').addEventListener('click', createOrder);
+            
+            // Кнопки сохранения в модальных окнах
+            document.getElementById('saveCategoryBtn').addEventListener('click', saveCategory);
+            document.getElementById('saveDishBtn').addEventListener('click', saveDish);
+            
+            // Закрытие модальных окон
+            document.querySelectorAll('.modal-close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').classList.add('hidden');
+                });
+            });
+            
+            // Закрытие по клику вне модального окна
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Заполняем демо данные в поля для удобства
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin123';
+        });
+    </script>
+</body>
+</html>
